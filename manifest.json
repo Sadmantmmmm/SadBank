@@ -10,4 +10,30 @@
   "theme_color": "#007bff",
   "id": "sadman",
   "lang": "pt"
+      "icons": [
+        {
+          "src": "android-launchericon-192-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        },
+        {
+          "src": "android-launchericon-192-192.png",
+          "sizes": "512x512",
+          "type": "image/png"
+        }
+      ],
+      "screenshots": [
+        {
+          "src": "android-launchericon-192-192.png",
+          "sizes": "640x480",
+          "type": "image/png",
+          "label": "Tela de login"
+        },
+        {
+          "src": "android-launchericon-192-192.png",
+          "sizes": "640x480",
+          "type": "image/png",
+          "label": "Tela de transações"
+        }
+      ],
 }
