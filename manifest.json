@@ -1,1 +1,13 @@
-{"theme_color":"#007bff","background_color":"#ededed","icons":[{"purpose":"maskable","sizes":"512x512","src":"icon512_maskable.png","type":"image/png"},{"purpose":"any","sizes":"512x512","src":"icon512_rounded.png","type":"image/png"}],"orientation":"portrait","display":"fullscreen","dir":"auto","lang":"pt-BR","name":"SadBank - Seu Banco Virtual!","short_name":"SadBank","start_url":"/SadBank/","scope":"/SadBank/"}
+{
+  "background_color": "#ededed",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "SadBank - Seu Banco Virtual!",
+  "orientation": "portrait",
+  "scope": "https://sadbank.onrender.com",
+  "short_name": "SadBank",
+  "start_url": "https://sadbank.onrender.com",
+  "theme_color": "#007bff",
+  "id": "sadman",
+  "lang": "pt"
+}
