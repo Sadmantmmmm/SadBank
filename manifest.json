@@ -9,7 +9,7 @@
   "start_url": "https://sadbank.onrender.com",
   "theme_color": "#007bff",
   "id": "sadman",
-  "lang": "pt"
+  "lang": "pt",
       "icons": [
         {
           "src": "android-launchericon-192-192.png",
