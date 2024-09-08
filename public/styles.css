@@ -1,0 +1,807 @@
+
+        body{
+          font-family: 'Roboto', sans-serif;
+          margin: 0;
+          padding: 0;
+          padding-bottom: 60px;
+          background-image: #ededed;
+          background-size: 400% 400%;
+          animation: bganimation 14s infinite;
+          overflow-y: auto;
+          font-size: 16px;
+          line-height: 1.5;
+        }
+        #qr-video {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover; /* Ajusta a imagem para preencher o elemento sem distorcer */
+          z-index: 9999; /* Garante que o vídeo fique acima de outros elementos */
+        }
+
+/* Estilo para garantir que o botão fique fixo na parte inferior */
+#qrScannerSection {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Opcional: Adiciona uma sobreposição escura para melhorar o contraste */
+  z-index: 9999; /* Certifique-se de que está acima de outros elementos */
+}
+
+/* Contêiner do vídeo para garantir que o vídeo ocupe o espaço inteiro */
+.relative {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Adiciona uma classe de animação em andamento para gerenciar o estado */
+body.animating .tab-content {
+  transition: none;
+}
+
+/* Estilo para o botão de cancelar */
+#cancelButton {
+  position: fixed;
+  bottom: 20px; /* Distância da parte inferior da tela */
+  left: 50%;
+  transform: translateX(-50%); /* Centraliza o botão horizontalmente */
+  z-index: 1100; /* Deve ser maior que o z-index do vídeo */
+  width: auto; /* Ajuste a largura conforme necessário */
+  padding: 10px 20px; /* Ajuste o padding conforme necessário */
+}
+  
+.text-primary {
+  color: #007bff;
+}
+
+.text-dark {
+  color: #e0e0e0;
+}
+
+.text-secondary {
+  color: #b0b0b0;
+}
+        .pix-confirmation {
+          display: flex;
+          justify-content: center;
+          align-items: flex-start; /* Alterado de center para flex-start */
+          padding: 2rem 0; /* Adicionado padding vertical */
+          background-color: #f0f2f5;
+          font-family: 'Arial', sans-serif;
+      }
+      
+      .confirmation-card {
+          background-color: #ffffff;
+          border-radius: 12px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+          padding: 2rem;
+          width: 100%;
+          max-width: 400px;
+          transition: all 0.3s ease;
+          margin-top: 1rem; /* Adicionado margem superior */
+      }
+      
+      .confirmation-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
+      }
+      
+      .confirmation-title {
+          color: #1a73e8;
+          font-size: 1.5rem;
+          font-weight: 600;
+          margin-bottom: 1.5rem;
+          text-align: center;
+      }
+      
+      .amount-container {
+          background-color: #e8f0fe;
+          border-radius: 8px;
+          padding: 1rem;
+          margin-bottom: 1.5rem;
+          text-align: center;
+      }
+
+      .bg-blue-600 {
+        background: linear-gradient(to right, #007bff, #0056b3);
+      }
+      
+      .amount-label {
+          color: #5f6368;
+          font-size: 0.9rem;
+          display: block;
+          margin-bottom: 0.5rem;
+      }
+      
+      .amount-value {
+          color: #1a73e8;
+          font-size: 1.8rem;
+          font-weight: 700;
+      }
+      
+      .recipient-info {
+          margin-bottom: 1.5rem;
+      }
+      
+      .recipient-info p {
+          color: #3c4043;
+          margin-bottom: 0.5rem;
+      }
+      
+      .recipient-name, .pix-key {
+          font-weight: 600;
+          color: #202124;
+      }
+      
+      .action-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+      }
+      
+      .confirm-button, .cancel-button {
+          padding: 0.75rem 1rem;
+          border-radius: 6px;
+          font-weight: 600;
+          transition: all 0.2s ease;
+          cursor: pointer;
+          border: none;
+      }
+      
+      .confirm-button {
+          background-color: #1a73e8;
+          color: #ffffff;
+      }
+      
+      .confirm-button:hover {
+          background-color: #1765cc;
+      }
+      
+      .cancel-button {
+          background-color: #f1f3f4;
+          color: #3c4043;
+      }
+      
+      .cancel-button:hover {
+          background-color: #e8eaed;
+      }
+      
+/* Responsividade */
+@media (max-width: 640px) {
+  .card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .icon {
+    margin-bottom: 8px;
+  }
+}
+
+.bg-gray-800 {
+  background-color: #1b2024;
+}
+
+      .details {
+        flex: 1;
+      }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #007bff; /* Azul forte */
+            border-color: #007bff;
+            z-index: 1000;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Azul escuro */
+            border-color: #004085;
+            transform: scale(1.05);
+        }
+
+        .btn-secondary {
+            color: #fff;
+            background-color: #6c757d; /* Cinza médio */
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268; /* Cinza escuro */
+            border-color: #545b62;
+            transform: scale(1.05);
+        }
+
+        .bg-white {
+            background-color: #2c2c2c; /* Cinza escuro */
+        }
+
+        .shadow-md {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .header, .footer {
+            background-color: #2c2c2c; /* Cinza escuro */
+            color: #e0e0e0; /* Texto claro */
+            padding: 1rem 0;
+            text-align: center;
+        }
+        
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .header, .footer {
+                text-align: center;
+                padding: 0.5rem 0;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animação de desvanecimento ao carregar */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        .fade-in05 {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+
+/* Animação de deslizar para cima */
+@keyframes slideUp {
+  from {
+      transform: translateY(20px);
+      opacity: 0;
+  }
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+/* Animação de deslizar para baixo */
+@keyframes slideDown {
+  from {
+      transform: translateY(0);
+      opacity: 1;
+  }
+  to {
+      transform: translateY(20px);
+      opacity: 0;
+  }
+}
+
+.tab-content {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  padding: 0px; /* Ajuste conforme necessário */
+  margin-bottom: 60px; /* Espaço suficiente para o menu inferior */
+  box-sizing: border-box; /* Inclui o padding na largura e altura total */
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .tab-content {
+    margin-bottom: 60px; /* Ajuste para garantir que a aba não fique por baixo do menu inferior */
+  }
+}
+
+
+.slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+.slide-down {
+  animation: slideDown 0.5s ease-out;
+}
+
+        .hidden { display: none; }
+        @keyframes slide-up {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Estilo das notificações */
+        .notification {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background-color: #007bff; /* Azul forte */
+            color: #fff;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 9999;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification.show {
+            display: block;
+        }
+        #notificationsContainer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: #2c2c2c; /* Cinza escuro */
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .notification-item {
+            padding: 10px;
+            border-bottom: 1px solid #444444; /* Cinza escuro */
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+/* Animação para quando o saldo aumenta */
+.fade-up {
+  animation: fadeUp 0.5s ease-in-out forwards;
+}
+
+/* Animação para quando o saldo diminui */
+.fade-down {
+  animation: fadeDown 0.5s ease-in-out forwards;
+}
+
+/* Animação para fade-out */
+.fade-out {
+  animation: fadeOut 0.6s ease-in-out forwards;
+}
+
+
+/* Definindo a animação de fade-out */
+@keyframes fadeOut {
+  from {
+      opacity: 1;
+  }
+  to {
+      opacity: 0;
+      visibility: hidden;
+  }
+}
+
+
+/* Definindo a animação de subir */
+@keyframes fadeUp {
+  from {
+      transform: translateY(10px);
+      opacity: 0.5;
+  }
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+/* Definindo a animação de descer */
+@keyframes fadeDown {
+  from {
+      transform: translateY(-10px);
+      opacity: 0.5;
+  }
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+        /*=============== TELA DE LOGIN ===============*/
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap");
+
+/*=============== VARIABLES CSS ===============*/
+:root {
+  /*========== Colors ==========*/
+  /* Color mode HSL & RGB */
+  --first-color: hsl(79, 100%, 49%);
+  --white-color: #fff;
+  --black-color: #000;
+
+  /*========== Font and typography ==========*/
+  /*.5rem = 8px | 1rem = 16px ...*/
+  --body-font: 'Poppins', sans-serif;
+  --normal-font-size: .938rem;
+  --tiny-font-size: .563rem;
+}
+
+/* Responsive typography */
+@media screen and (min-width: 968px) {
+  :root {
+    --normal-font-size: 1rem;
+  }
+}
+
+/*=============== BASE ===============*/
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: var(--body-font);
+  font-size: var(--normal-font-size);
+  background-color: var(--white-color);
+}
+
+/*=============== MODERN INPUT ===============*/
+.form {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  margin: 0 1.5rem;
+}
+
+.form__content {
+  display: grid;
+  row-gap: 1.5rem;
+}
+
+.form__input, 
+.form__label, 
+.form__submit {
+  border: 0;
+  outline: none;
+  font-size: var(--normal-font-size);
+  font-family: var(--body-font);
+}
+
+.form__box {
+  width: 312px;
+  height: 59px;
+  position: relative;
+}
+
+.form__shadow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: var(--black-color);
+}
+
+.form__input {
+  position: absolute;
+  border: 2.5px solid var(--black-color);
+  background-color: var(--white-color);
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  padding: 18px;
+  transition: transform .3s;
+}
+
+.form__input::placeholder {
+  transition: opacity .5s;
+}
+
+.form__label {
+  z-index: 100;
+  position: absolute;
+  top: 16px;
+  left: 20px;
+  font-size: var(--tiny-font-size);
+  font-weight: 600;
+  transition: .2s;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.form__button {
+  justify-self: flex-end;
+  background-color: var(--black-color);
+}
+
+.form__submit {
+  padding: .875rem 1.5rem;
+  color: var(--black-color);
+  background-color: var(--first-color);
+  cursor: pointer;
+  transition: transform .3s;
+}
+
+.form__submit:hover {
+  transform: translate(-6px, -6px);
+}
+
+/* Opaque placeholder */
+.form__input:focus::placeholder {
+  opacity: 0;
+  transition: .3s;
+}
+
+/* Move input and sticky input up */
+.form__input:focus, 
+.form__input:not(:placeholder-shown).form__input:not(:focus) {
+  transform: translate(-8px, -8px);
+  padding: 28px 18px 18px;
+  animation: input-animation .5s;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Move label and sticky label up */
+.form__input:focus + .form__label,
+.form__input:not(:placeholder-shown).form__input:not(:focus) + .form__label {
+  opacity: 1;
+  top: 2px;
+  left: 12px;
+  transition: all 0.3s ease-out;
+  transform-origin: 0 0;
+  transform: translateY(-24px) scale(0.8);
+  color: #007bff;
+}
+
+/* Input bounce animation */
+@keyframes input-animation {
+  0% {
+    transform: translate(0);
+  }
+  40% {
+    transform: translate(-9px, -9px);
+  }
+  60% {
+    transform: translate(-7px, -7px);
+  }
+}
+
+/*=============== BREAKPOINTS ===============*/
+/* For small devices */
+@media screen and (max-width: 340px) {
+  .form__content, 
+  .form__box {
+    width: 100%;
+  }
+}
+
+/* For large devices */
+@media screen and (min-width: 968px) {
+  .form__content {
+    zoom: 1.1;
+  }
+}
+
+/* Ajuste do texto "ID DA CONTA:" */
+#userid {
+    font-size: 0.980rem; /* Reduzindo o tamanho da fonte */
+    font-weight: 600; /* Tornando o texto um pouco mais grosso */
+}
+
+#userInitial {
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.transaction-item:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+}
+
+.transaction-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
+}
+
+.transaction-details {
+  flex: 1;
+}
+
+.transaction-text {
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
+.transaction-amount {
+  font-weight: bold;
+}
+
+.transaction-amount.positive {
+  color: #28a745;
+}
+
+.transaction-amount.negative {
+  color: #dc3545;
+}
+
+.transaction-date {
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+/* Aprimorar navegação inferior */
+#Menuinferior a {
+  padding: 10px 0;
+  font-size: 12px;
+}
+
+#Menuinferior i {
+  font-size: 24px;
+}
+
+#Menuinferior .active {
+  color: #007bff;
+  border-top: 2px solid #007bff;
+}
+
+/* Melhorar inputs de formulário */
+.input-field {
+  padding-left: 30px;
+  background-repeat: no-repeat;
+  background-position: 8px center;
+  background-size: 16px;
+}
+
+/* Aprimorar botões */
+.btn {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.375rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.qr-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+}
+
+.scan-animation {
+  width: 200px;
+  height: 200px;
+  border: 2px solid var(#007bff);
+  animation: scan 2s linear infinite;
+}
+
+@keyframes scan {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(100px); }
+  100% { transform: translateY(0); }
+}
+
+/* Estilos para o menu inferior */
+nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #1F2937; /* Cor do fundo */
+  z-index: 900; /* Para garantir que o menu esteja acima do conteúdo */
+}
+
+nav ul {
+  display: flex;
+  justify-content: space-around;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: #1F2937; /* Cor do fundo */
+}
+
+nav ul li {
+  flex: 1;
+  text-align: center;
+}
+
+nav ul li a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+nav ul li a:hover {
+  background-color: #374151;
+}
+
+/* Estilo para ícones */
+nav ul li a i {
+  font-size: 1.5rem;
+}
+
+.active-tab {
+  color: #ffd700; /* Dourado para o item ativo */
+}
+
+
+
+
+
+nav ul li a span {
+  margin-top: 4px;
+  font-size: 0.875rem;
+}
