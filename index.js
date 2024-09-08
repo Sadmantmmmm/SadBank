@@ -6,19 +6,12 @@ const path = require('path');
 const moment = require('moment');
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({ noServer: true });
-const https = require('https');
 const fs = require('fs'); 
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 const clients = new Map();
-
-const options = {
-  key: fs.readFileSync('localhost-key.pem'),
-  cert: fs.readFileSync('localhost.pem')
-};
-
 // Database initialization
 async function initDB() {
   const db = await open({
@@ -109,7 +102,6 @@ initDB().then(db => {
 }).catch(err => {
   console.error('Error initializing database:', err);
 });
-app.use(express.static(path.join(__dirname, 'public')));
 // Helper functions
 async function getUserBalance(db, userId) {
   try {
@@ -451,8 +443,7 @@ app.get('/api/saldo/:user_id', async (req, res) => {
     await db.close();
   }
 });
-
-
+app.use(express.static(path.join(__dirname, 'public')));
 // WebSocket configuration
 wss.on('connection', (ws, request) => {
   const userId = request.url.split('/').pop(); // Assume userId is part of the URL
@@ -463,10 +454,9 @@ wss.on('connection', (ws, request) => {
   });
 });
 
-// Criar servidor HTTPS em vez de HTTP
 const PORT = process.env.PORT || 3000;
-const server = https.createServer(options, app).listen(PORT, () => {
-  console.log(`Server running on https://localhost:${PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
 
 server.on('upgrade', (request, socket, head) => {
